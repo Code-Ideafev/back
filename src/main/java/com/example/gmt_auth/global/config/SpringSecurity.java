@@ -1,6 +1,5 @@
 package com.example.gmt_auth.global.config;
 
-import com.example.gmt_auth.domain.auth.repository.UserRepository;
 import com.example.gmt_auth.global.jwt.JWTFilter;
 import com.example.gmt_auth.global.jwt.JWTUtil;
 import com.example.gmt_auth.global.jwt.LoginFilter;
