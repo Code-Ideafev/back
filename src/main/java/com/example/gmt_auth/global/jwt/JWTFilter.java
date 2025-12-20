@@ -1,5 +1,7 @@
 package com.example.gmt_auth.global.jwt;
 
+import com.example.gmt_auth.domain.auth.dto.CustomUserDetails;
+import com.example.gmt_auth.domain.auth.entity.UserEntity;
 import com.example.gmt_auth.domain.auth.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
