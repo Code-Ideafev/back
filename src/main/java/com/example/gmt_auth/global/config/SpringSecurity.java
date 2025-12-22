@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,45 +23,46 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-@EnableGlobalMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SpringSecurity {
 
-    private final JWTUtil JwtUtil;
+    private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
-    private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
-        AuthenticationManager authenticationManager = authenticationManager();
+        AuthenticationManager authenticationManager = authenticationManager(null);
 
-        LoginFilter loginFilter = new LoginFilter(authenticationManager, JwtUtil);
+        LoginFilter loginFilter = new LoginFilter(authenticationManager, jwtUtil);
         loginFilter.setFilterProcessesUrl("/user/login");
 
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 추가
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/join", "/auth/login", "/email/**").permitAll()
-                        .requestMatchers("/timer/**", "auth/me/**", "auth/list").authenticated()
+                        .requestMatchers("/timer/**", "/auth/me/**", "/auth/list").authenticated()
                         .anyRequest().authenticated()
                 )
-
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
-
-                .addFilterBefore(new JWTFilter(JwtUtil, userRepository),
-                        LoginFilter.class);
+                .addFilterBefore(
+                        new JWTFilter(jwtUtil, userRepository),
+                        LoginFilter.class
+                );
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
