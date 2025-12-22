@@ -47,8 +47,8 @@ public class SpringSecurity {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/timer/**").authenticated()
+                        .requestMatchers("/auth/join", "/auth/login").permitAll()
+                        .requestMatchers("/timer/**", "auth/me/**", "auth/list").authenticated()
                         .anyRequest().authenticated()
                 )
 
