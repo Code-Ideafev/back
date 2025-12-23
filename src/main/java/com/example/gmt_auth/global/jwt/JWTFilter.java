@@ -48,9 +48,9 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtUtil.getUsername(token);
+        String email = jwtUtil.getEmail(token);
 
-        UserEntity user = userRepository.findByUsername(username)
+        UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
 
         CustomUserDetails userDetails = new CustomUserDetails(user);

@@ -26,38 +26,40 @@ public class JWTUtil {
         );
     }
 
-    public String getUsername(String token) {
-        return Jwts.parser().verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("username", String.class);
-    }
-
-    public boolean isExpired(String token) {
-        return Jwts.parser().verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration()
-                .before(new Date());
-    }
-
-    public String createJwt(String username) {
+    public String createJwt(String email) {
         return Jwts.builder()
-                .claim("username", username)
+                .setSubject(email)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + accessExpiration))
                 .signWith(secretKey)
                 .compact();
     }
 
-    public String createRefreshJwt(String username) {
+    public String createRefreshJwt(String email) {
         return Jwts.builder()
-                .claim("username", username)
+                .setSubject(email)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + refreshExpiration))
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public String getEmail(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    public boolean isExpired(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration()
+                .before(new Date());
     }
 }
