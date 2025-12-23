@@ -28,7 +28,7 @@ public class TimerEntity {
     public void setElapsedTime(long elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
-    public void setUsername(UserEntity username) {
-        this.username = username;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

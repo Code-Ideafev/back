@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface TimerRepository extends JpaRepository<TimerEntity, Long> {
     List<TimerEntity> findByUser_Id(Long userId);
-    List<TimerEntity> findByUser_Username(String username);
+    List<TimerEntity> findByUser_Email(String email);
 }
