@@ -64,8 +64,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        String username = customUserDetails.getUsername();
-        String token = jwtUtil.createJwt(username);
+        String email = customUserDetails.getUsername();
+        String token = jwtUtil.createJwt(email);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -1,9 +1,6 @@
 package com.example.gmt_auth.domain.auth.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +16,10 @@ public class UserEntity {
     private Long id;
 
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String password;
     private String profileImageUrl;
     private String code;
