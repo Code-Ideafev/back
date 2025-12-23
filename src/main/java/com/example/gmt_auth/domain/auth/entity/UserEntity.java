@@ -1,13 +1,13 @@
 package com.example.gmt_auth.domain.auth.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.gmt_timer.domain.timer.entity.TimerEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -25,6 +25,9 @@ public class UserEntity {
     private String code;
     private LocalDateTime expiredAt;
     private String newPassword;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TimerEntity> timers = new ArrayList<>();
 
     public void setUsername(String username) {
         this.username = username;
