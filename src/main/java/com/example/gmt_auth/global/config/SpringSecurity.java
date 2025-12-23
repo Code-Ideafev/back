@@ -55,6 +55,7 @@ public class SpringSecurity {
 
                         .requestMatchers("/auth/me/**").authenticated()
                         .requestMatchers("/auth/list").authenticated()
+                        .requestMatchers("/timer/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
