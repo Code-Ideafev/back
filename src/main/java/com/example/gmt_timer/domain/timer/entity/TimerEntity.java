@@ -18,11 +18,11 @@ public class TimerEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity username;
+    private UserEntity user;
 
     private long elapsedTime;
 
-    public void id(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public void setElapsedTime(long elapsedTime) {
