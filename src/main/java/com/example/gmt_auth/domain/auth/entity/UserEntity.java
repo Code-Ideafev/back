@@ -1,6 +1,7 @@
 package com.example.gmt_auth.domain.auth.entity;
 
 import com.example.gmt_timer.domain.timer.entity.TimerEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class UserEntity {
     private String newPassword;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TimerEntity> timers = new ArrayList<>();
 
     public void setUsername(String username) {

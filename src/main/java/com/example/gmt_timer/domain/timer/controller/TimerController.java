@@ -1,9 +1,12 @@
 package com.example.gmt_timer.domain.timer.controller;
 
+import com.example.gmt_auth.domain.auth.dto.CustomUserDetails;
 import com.example.gmt_auth.domain.auth.repository.UserRepository;
 import com.example.gmt_auth.global.jwt.JWTUtil;
+import com.example.gmt_timer.domain.timer.dto.TimerResponseDto;
 import com.example.gmt_timer.domain.timer.entity.TimerEntity;
 import com.example.gmt_timer.domain.timer.service.TimerService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +19,9 @@ import java.util.List;
 public class TimerController {
 
     private final TimerService timerService;
-    private final JWTUtil jwtUtil;
 
-    public TimerController(TimerService timerService, JWTUtil jwtUtil) {
+    public TimerController(TimerService timerService) {
         this.timerService = timerService;
-        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/startTime")
@@ -30,18 +31,22 @@ public class TimerController {
     }
 
     @GetMapping("/endTime")
-    public String endTimer(@RequestHeader("Authorization") String authHeader){
-        String token = authHeader.replace("Bearer ", "");
-        String username = jwtUtil.getUsername(token);
+    public String endTimer(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        String email = userDetails.getUsername(); // ← email 반환하게 되어 있음
 
-        long elapsedTime = timerService.recordEndTime(username);
+        long elapsedTime = timerService.recordEndTime(email);
         String realTime = timerService.formatTime(elapsedTime);
 
         return "공부 완료! " + realTime + "동안 공부를 하였어요!";
     }
 
     @GetMapping("/list")
-    public List<TimerEntity> list(){
-        return timerService.getTimer();
+    public List<TimerResponseDto> list() {
+        return timerService.getTimer()
+                .stream()
+                .map(TimerResponseDto::new)
+                .toList();
     }
 }

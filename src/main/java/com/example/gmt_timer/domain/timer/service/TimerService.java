@@ -29,34 +29,30 @@ public class TimerService {
         System.out.println("시작 시간:" + startTime);
     }
 
-    public long recordEndTime(String username) {
-        try {
-            if (startTime == null) {
-                throw new IllegalStateException("시작 시간이 측정되지 않았어요!");
-            }
+    public long recordEndTime(String email) {
 
-            endTime = System.currentTimeMillis();
-            long elapsedTime = endTime - startTime;
-
-            UserEntity user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-
-            TimerEntity timer = new TimerEntity();
-            timer.setUser(user);
-            timer.setElapsedTime(elapsedTime);
-
-            System.out.println("끝난 시간:" + elapsedTime);
-
-            timerRepository.save(timer);
-
-            startTime = null;
-            endTime = null;
-
-            return elapsedTime;
-
-        } catch (IllegalStateException e) {
-            throw new RuntimeException(e);
+        if (startTime == null) {
+            throw new IllegalStateException("시작 시간이 측정되지 않았어요!");
         }
+
+        endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        TimerEntity timer = new TimerEntity();
+        timer.setUser(user);
+        timer.setElapsedTime(elapsedTime);
+
+        System.out.println("끝난 시간:" + elapsedTime);
+
+        timerRepository.save(timer);
+
+        startTime = null;
+        endTime = null;
+
+        return elapsedTime;
     }
 
     public List<TimerEntity> getTimer() { // 타이머 기록 조회
