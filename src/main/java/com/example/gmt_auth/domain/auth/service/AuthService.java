@@ -29,10 +29,9 @@ public class AuthService {
     private static final SecureRandom secureRandom = new SecureRandom();
 
     public void join(JoinDto joinDto) {
-        // 이메일 인증 체크 제거 (회원가입 시에는 불필요)
 
-        if (userRepository.findByUsername(joinDto.getUsername()).isPresent()) {
-            throw new RuntimeException("이미 존재하는 아이디");
+        if (userRepository.findByEmail(joinDto.getEmail()).isPresent()) {
+            throw new RuntimeException("이미 존재하는 이메일입니다.");
         }
 
         UserEntity user = new UserEntity();
@@ -43,15 +42,15 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public String login(String username, String password) {
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("아이디 없음"));
+    public String login(String email, String password) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("이메일 없음"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("비밀번호 불일치");
         }
 
-        return jwtUtil.createJwt(username);
+        return jwtUtil.createJwt(user.getUsername());
     }
 
     public void updateProfile(MeDto meDto, String username) {

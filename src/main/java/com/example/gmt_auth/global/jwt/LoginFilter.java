@@ -44,7 +44,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
-                            loginDto.getUsername(),
+                            loginDto.getEmail(),
                             loginDto.getPassword()
                     );
 
