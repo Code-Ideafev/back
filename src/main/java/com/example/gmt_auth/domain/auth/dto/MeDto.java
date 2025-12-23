@@ -10,5 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MeDto {
-    private String profileImageUrl;
+    private String profileImageUrl;  // username 제거!
 }

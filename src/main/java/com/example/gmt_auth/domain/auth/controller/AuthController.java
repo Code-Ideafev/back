@@ -47,6 +47,7 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+
     @GetMapping("/list")
     public List<UserEntity> findAll() {
         return authService.userList();
