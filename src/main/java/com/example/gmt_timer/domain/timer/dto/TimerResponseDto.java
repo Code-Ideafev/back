@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,10 +16,12 @@ public class TimerResponseDto {
     private Long id;
     private Long elapsedTime;
     private String email;
+    private LocalDate recordDate;
 
     public TimerResponseDto(TimerEntity timer) {
         this.id = timer.getId();
         this.elapsedTime = timer.getElapsedTime();
         this.email = timer.getUser().getEmail();
+        this.recordDate = timer.getRecordDate();
     }
 }

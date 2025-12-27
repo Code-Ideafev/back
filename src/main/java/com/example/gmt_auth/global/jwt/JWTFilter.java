@@ -29,7 +29,13 @@ public class JWTFilter extends OncePerRequestFilter {
             throws IOException, ServletException {
 
         String uri = request.getRequestURI();
-        if (uri.startsWith("/auth")) {
+
+        if (
+                uri.equals("/auth/login") ||
+                        uri.equals("/auth/join") ||
+                        uri.equals("/auth/reset-password") ||
+                        uri.startsWith("/email")
+        ) {
             chain.doFilter(request, response);
             return;
         }

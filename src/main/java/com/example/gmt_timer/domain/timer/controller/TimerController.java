@@ -1,7 +1,6 @@
 package com.example.gmt_timer.domain.timer.controller;
 
 import com.example.gmt_auth.domain.auth.dto.CustomUserDetails;
-import com.example.gmt_auth.domain.auth.dto.RockModeDto;
 import com.example.gmt_timer.domain.timer.dto.TimerResponseDto;
 import com.example.gmt_timer.domain.timer.service.TimerService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,9 +44,13 @@ public class TimerController {
                 .toList();
     }
 
-    @PostMapping("/rock")
-    public boolean rock(@RequestBody RockModeDto rockModeDto) {
-        timerService.rockMode(rockModeDto);
-        return true;
+    @GetMapping("/set-public")
+    public void rockModeOn(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        timerService.setPublic(userDetails.getUsername());
+    }
+
+    @GetMapping("/set-private")
+    public void rockModeOff(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        timerService.setPrivate(userDetails.getUsername());
     }
 }

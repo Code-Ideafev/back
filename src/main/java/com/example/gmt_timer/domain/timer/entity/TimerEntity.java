@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -22,6 +24,8 @@ public class TimerEntity {
 
     private long elapsedTime;
 
+    private LocalDate recordDate;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -30,5 +34,8 @@ public class TimerEntity {
     }
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+    public void setRecordDate(LocalDate recordDate) {
+        this.recordDate = recordDate;
     }
 }

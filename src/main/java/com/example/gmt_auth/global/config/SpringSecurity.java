@@ -54,6 +54,7 @@ public class SpringSecurity {
                         .requestMatchers("/auth/join", "/auth/login", "/auth/reset-password", "/email/**").permitAll()
 
                         .requestMatchers("/auth/me/**").authenticated()
+                        .requestMatchers("/auth/set-public", "/auth/set-private").authenticated()
                         .requestMatchers("/auth/list").authenticated()
                         .requestMatchers("/timer/**").authenticated()
                         .anyRequest().authenticated()

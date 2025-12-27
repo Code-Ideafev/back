@@ -2,10 +2,12 @@ package com.example.gmt_timer.domain.timer.service;
 
 import com.example.gmt_auth.domain.auth.entity.UserEntity;
 import com.example.gmt_auth.domain.auth.repository.UserRepository;
-import com.example.gmt_auth.domain.auth.dto.RockModeDto;
 import com.example.gmt_timer.domain.timer.entity.TimerEntity;
 import com.example.gmt_timer.domain.timer.repository.TimerRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -45,6 +47,7 @@ public class TimerService {
         TimerEntity timer = new TimerEntity();
         timer.setUser(user);
         timer.setElapsedTime(elapsedTime);
+        timer.setRecordDate(LocalDate.now());
 
         System.out.println("끝난 시간:" + elapsedTime);
 
@@ -84,7 +87,19 @@ public class TimerService {
         return time.toString().trim();
     }
 
-    public void rockMode(RockModeDto rockModeDto) {
-        // rockModeDto 사용
+    @Transactional
+    public void setPublic(String email) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        user.setRockMode(true);
+    }
+
+    @Transactional
+    public void setPrivate(String email) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        user.setRockMode(false);
     }
 }
